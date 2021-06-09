@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:question_world/Auth/forgetPassword.dart';
+import 'signUpPage.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key key}) : super(key: key);
@@ -12,14 +14,14 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Login Page"),
+        title: Text("Login"),
       ),
       backgroundColor: Colors.grey[100],
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           SizedBox(
-            height: 10,
+            height: 5,
           ),
           Container(
             child: Center(
@@ -29,6 +31,7 @@ class _LoginPageState extends State<LoginPage> {
                   fontSize: 42,
                   color: Colors.blue[400],
                   fontStyle: FontStyle.italic,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
             ),
@@ -57,7 +60,14 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 Container(
                   child: FlatButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ForgetPassword(),
+                        ),
+                      );
+                    },
                     child: Text(
                       "Forget Password?",
                       style: TextStyle(
@@ -74,7 +84,8 @@ class _LoginPageState extends State<LoginPage> {
                   height: 50,
                   width: MediaQuery.of(context).size.width - 10,
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5),
+                    borderRadius: BorderRadius.circular(30),
+                    border: Border.all(width: 1),
                     color: Colors.blue,
                   ),
                   child: FlatButton(
@@ -93,8 +104,16 @@ class _LoginPageState extends State<LoginPage> {
           ),
           Container(
               child: FlatButton(
-            onPressed: () {},
-            child: Text("New User? Create Account?"),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => SignUpPage()),
+              );
+            },
+            child: Text(
+              "New User? Create Account?",
+              style: TextStyle(color: Colors.black87),
+            ),
           )),
         ],
       ),
