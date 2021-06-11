@@ -101,7 +101,7 @@ class _AddQuestionState extends State<AddQuestion> {
               ),
             ),
             SizedBox(height: 50),
-            SizedBox(
+            Container(
               height: 50,
               width: 250,
               child: ElevatedButton(
