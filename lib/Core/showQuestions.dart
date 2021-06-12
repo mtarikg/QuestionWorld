@@ -30,53 +30,75 @@ class ShowQuestions extends StatelessWidget {
           itemCount: questions.length,
           itemBuilder: (context, int index) {
             return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 SizedBox(
                   height: 10,
                 ),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    primary: Colors.lightBlueAccent,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30))
-                  ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
                   child: Container(
+                    width: MediaQuery.of(context).size.width - 30,
+                    height: 300,
+                    decoration: BoxDecoration(
+                      border: Border.all(width: 1, color: Colors.grey),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
                     child: Column(
                       children: [
-                        Row(
-                          children: [
-                            Icon(
-                              Icons.person,
-                              color: Colors.black87,
+                        Padding(
+                          padding: const EdgeInsets.only(top: 10, bottom: 10),
+                          child: Container(
+                            width: MediaQuery.of(context).size.width - 60,
+                            height: 230,
+                            decoration: BoxDecoration(
+                              border: Border.all(width: 1, color: Colors.grey),
                             ),
-                            // will be the profile pic of a user
-                            SizedBox(width: 15),
-                            Text(
-                              "Username here",
-                              style: TextStyle(
-                                  color: Colors.black87,
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.bold),
+                            child: Image.network(
+                              "https://picsum.photos/250?image=9",
+                              fit: BoxFit.cover,
                             ),
-                          ],
-                        ),
-                        SizedBox(height: 10),
-                        Text(
-                          "Question title here",
-                          style: TextStyle(
-                            color: Colors.black87,
-                            fontSize: 20,
                           ),
                         ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 9.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Container(
+                                child: Row(
+                                  children: [
+                                    Icon(Icons.person),
+                                    Text(
+                                      "Username",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              Expanded(
+                                  child: Text("Please help this question.")),
+                              FlatButton(
+                                  onPressed: () {
+                                    Navigator.of(context).push(
+                                        MaterialPageRoute(builder: (context) {
+                                      return QuestionDetail(questions[index]);
+                                    }));
+                                  },
+                                  child: Text(
+                                    "Answer",
+                                    style: TextStyle(color: Colors.blue),
+                                  ))
+                            ],
+                          ),
+                        )
                       ],
                     ),
                   ),
-                  onPressed: () {
-                    Navigator.of(context)
-                        .push(MaterialPageRoute(builder: (context) {
-                      return QuestionDetail(questions[index]);
-                    }));
-                  },
                 ),
                 SizedBox(
                   height: 10,
@@ -87,3 +109,4 @@ class ShowQuestions extends StatelessWidget {
     );
   }
 }
+/* onPressed: */

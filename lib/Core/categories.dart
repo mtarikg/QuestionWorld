@@ -25,24 +25,27 @@ class Categories extends StatelessWidget {
                 SizedBox(
                   height: 15,
                 ),
-                SizedBox(
-                  width: 150,
+                Container(
+                  width: MediaQuery.of(context).size.width - 30,
                   height: 100,
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      primary: Colors.blue,
-                      textStyle: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
+                  decoration: BoxDecoration(
+                    color: Colors.blue,
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: FlatButton(
                     onPressed: () {
                       Navigator.of(context)
                           .push(MaterialPageRoute(builder: (context) {
                         return ShowQuestions(categories[index]);
                       }));
                     },
-                    child: Text(categories[index]),
+                    child: Text(
+                      categories[index],
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20,
+                      ),
+                    ),
                   ),
                 ),
                 SizedBox(

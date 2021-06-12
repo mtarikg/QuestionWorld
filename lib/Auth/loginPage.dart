@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:question_world/Auth/forgetPassword.dart';
+import 'package:question_world/Core/mainPage.dart';
 import 'signUpPage.dart';
 
 class LoginPage extends StatefulWidget {
@@ -43,6 +44,7 @@ class _LoginPageState extends State<LoginPage> {
                   padding: const EdgeInsets.all(10.0),
                   child: TextField(
                     decoration: InputDecoration(
+                      prefixIcon: Icon(Icons.mail),
                       labelText: "Email",
                       hintText: "Please enter your email",
                     ),
@@ -53,6 +55,7 @@ class _LoginPageState extends State<LoginPage> {
                   child: TextField(
                     obscureText: true,
                     decoration: InputDecoration(
+                      prefixIcon: Icon(Icons.lock),
                       labelText: "Password",
                       hintText: "Please enter your password",
                     ),
@@ -89,7 +92,12 @@ class _LoginPageState extends State<LoginPage> {
                     color: Colors.blue,
                   ),
                   child: FlatButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => MainPage()),
+                      );
+                    },
                     child: Text(
                       "Login",
                       style: TextStyle(

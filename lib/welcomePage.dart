@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:question_world/Auth/loginPage.dart';
 import 'package:question_world/Auth/signUpPage.dart';
+import 'package:question_world/Core/mainPage.dart';
 
 class WelcomePage extends StatefulWidget {
   const WelcomePage({Key key}) : super(key: key);
@@ -114,7 +115,12 @@ class _WelcomePageState extends State<WelcomePage> {
                   height: 50,
                   width: MediaQuery.of(context).size.width - 20,
                   child: FlatButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => MainPage()),
+                      );
+                    },
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
