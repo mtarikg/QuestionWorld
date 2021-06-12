@@ -132,7 +132,7 @@ class _WelcomePageState extends State<WelcomePage> {
                           width: 10,
                         ),
                         Text(
-                          "Sign In with Google",
+                          "Sign In with Apple",
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 18,
