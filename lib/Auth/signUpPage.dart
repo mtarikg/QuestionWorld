@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:question_world/Auth/loginPage.dart';
+import 'package:question_world/Core/mainPage.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({Key key}) : super(key: key);
@@ -41,6 +42,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   padding: const EdgeInsets.all(10.0),
                   child: TextField(
                     decoration: InputDecoration(
+                      prefixIcon: Icon(Icons.ac_unit),
                       labelText: "Name",
                       hintText: "Please enter your  name",
                     ),
@@ -50,6 +52,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   padding: const EdgeInsets.all(10.0),
                   child: TextField(
                     decoration: InputDecoration(
+                      prefixIcon: Icon(Icons.mail),
                       labelText: "Email",
                       hintText: "Please enter your email",
                     ),
@@ -60,6 +63,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   child: TextField(
                     obscureText: true,
                     decoration: InputDecoration(
+                      prefixIcon: Icon(Icons.lock),
                       labelText: "Password",
                       hintText: "Please enter your password",
                     ),
@@ -77,7 +81,12 @@ class _SignUpPageState extends State<SignUpPage> {
                     color: Colors.blue,
                   ),
                   child: FlatButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => MainPage()),
+                      );
+                    },
                     child: Text(
                       "Sign Up",
                       style: TextStyle(

@@ -24,6 +24,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                   padding: const EdgeInsets.all(10.0),
                   child: TextField(
                     decoration: InputDecoration(
+                      prefixIcon: Icon(Icons.mail),
                       labelText: "Email",
                       hintText: "Please enter your email",
                     ),

@@ -19,33 +19,33 @@ class QuestionDetail extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(height: 20),
-            Container(
-              padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
-              color: Colors.white,
-              child: Row(
-                children: [
-                  Icon(
-                    Icons.person, // will be the profile pic of a user
-                    color: Colors.black,
-                  ),
-                  SizedBox(width: 15),
-                  Flexible(
-                    child: Text(
-                      "Username here",
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                color: Colors.white,
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.person, // will be the profile pic of a user
+                      color: Colors.black,
+                    ),
+                    SizedBox(width: 15),
+                    Text(
+                      "Username ",
                       style: TextStyle(
                           color: Colors.black,
                           fontSize: 15,
                           fontWeight: FontWeight.bold),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
             SizedBox(height: 20),
             Container(
               padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
               child: Text(
-                "Question title here",
+                "Question title",
                 style: TextStyle(color: Colors.black, fontSize: 20),
               ),
             ),
@@ -63,6 +63,7 @@ class QuestionDetail extends StatelessWidget {
                     tag: 'imageHero',
                     child: Image.network(
                       'https://picsum.photos/250?image=9',
+                      fit: BoxFit.cover,
                     ),
                   ),
                 ),
@@ -101,61 +102,65 @@ class QuestionDetail extends StatelessWidget {
                       SizedBox(
                         height: 20,
                       ),
-                      Container(
-                        padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
-                        decoration: BoxDecoration(
-                          border: Border.all(color: Colors.lightBlueAccent),
-                          borderRadius: BorderRadius.circular(30),
-                          color: Colors.lightBlueAccent,
-                        ),
-                        child: Column(
-                          children: [
-                            Row(
-                              children: [
-                                Icon(
-                                  Icons.person,
-                                  color: Colors.black87,
-                                ),
-                                // will be the profile pic of a user
-                                SizedBox(width: 15),
-                                Text(
-                                  "Username here",
-                                  style: TextStyle(
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.lightBlueAccent),
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                          child: Column(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(left: 8.0),
+                                child: Row(
+                                  children: [
+                                    Icon(
+                                      Icons.person,
                                       color: Colors.black87,
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.bold),
+                                    ),
+                                    // will be the profile pic of a user
+                                    SizedBox(width: 15),
+                                    Text(
+                                      "Username",
+                                      style: TextStyle(
+                                          color: Colors.black87,
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ],
                                 ),
-                              ],
-                            ),
-                            SizedBox(height: 20),
-                            Text(
-                              "Answer here",
-                              style: TextStyle(
-                                color: Colors.black87,
-                                fontSize: 20,
                               ),
-                            ),
-                            Container(
-                              child: GestureDetector(
-                                onTap: () {
-                                  Navigator.of(context).push(
-                                      MaterialPageRoute(builder: (context) {
-                                    return FullPicture();
-                                  }));
-                                },
-                                child: Center(
-                                  child: Hero(
-                                    tag: 'imageHero',
-                                    child: Image.network(
-                                      'https://picsum.photos/250?image=9',
-                                      width: 50,
-                                      height: 50,
+                              SizedBox(height: 20),
+                              Text(
+                                "Answer here",
+                                style: TextStyle(
+                                  color: Colors.black87,
+                                  fontSize: 20,
+                                ),
+                              ),
+                              Container(
+                                child: GestureDetector(
+                                  onTap: () {
+                                    Navigator.of(context).push(
+                                        MaterialPageRoute(builder: (context) {
+                                      return FullPicture();
+                                    }));
+                                  },
+                                  child: Center(
+                                    child: Hero(
+                                      tag: 'imageHero',
+                                      child: Image.network(
+                                        'https://picsum.photos/250?image=9',
+                                        width: 50,
+                                        height: 50,
+                                      ),
                                     ),
                                   ),
                                 ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
                       SizedBox(height: 20),
