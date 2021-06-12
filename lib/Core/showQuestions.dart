@@ -35,9 +35,10 @@ class ShowQuestions extends StatelessWidget {
                 SizedBox(
                   height: 10,
                 ),
-                TextButton(
-                  style: TextButton.styleFrom(
-                    primary: Colors.white,
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.lightBlueAccent,
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30))
                   ),
                   child: Container(
                     child: Column(

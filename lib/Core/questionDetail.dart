@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:question_world/Core/answerQuestion.dart';
 
 class QuestionDetail extends StatelessWidget {
   final answers = ["a1", "a2", "a3", "a4", "a5"];
@@ -71,7 +72,11 @@ class QuestionDetail extends StatelessWidget {
             Align(
               alignment: Alignment.bottomRight,
               child: TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => AnswerQuestion()),
+                    );
+                  },
                   child: Text(
                     "Answer this question!",
                     style: TextStyle(fontSize: 15),
@@ -98,6 +103,11 @@ class QuestionDetail extends StatelessWidget {
                       ),
                       Container(
                         padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.lightBlueAccent),
+                          borderRadius: BorderRadius.circular(30),
+                          color: Colors.lightBlueAccent,
+                        ),
                         child: Column(
                           children: [
                             Row(
@@ -123,6 +133,26 @@ class QuestionDetail extends StatelessWidget {
                               style: TextStyle(
                                 color: Colors.black87,
                                 fontSize: 20,
+                              ),
+                            ),
+                            Container(
+                              child: GestureDetector(
+                                onTap: () {
+                                  Navigator.of(context).push(
+                                      MaterialPageRoute(builder: (context) {
+                                    return FullPicture();
+                                  }));
+                                },
+                                child: Center(
+                                  child: Hero(
+                                    tag: 'imageHero',
+                                    child: Image.network(
+                                      'https://picsum.photos/250?image=9',
+                                      width: 50,
+                                      height: 50,
+                                    ),
+                                  ),
+                                ),
                               ),
                             ),
                           ],

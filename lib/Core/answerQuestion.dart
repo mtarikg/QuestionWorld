@@ -1,29 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:question_world/Core/mainPage.dart';
+import 'package:question_world/Core/questionDetail.dart';
+import 'mainPage.dart';
 
-class AddQuestion extends StatefulWidget {
+class AnswerQuestion extends StatefulWidget {
   @override
-  _AddQuestionState createState() => _AddQuestionState();
+  _AnswerQuestionState createState() => _AnswerQuestionState();
 }
 
-class _AddQuestionState extends State<AddQuestion> {
-  String selectedCategory;
-  final categories = [
-    "Math",
-    "Literature",
-    "English",
-    "Geography",
-    "History",
-    "Spanish",
-  ];
-
-  void changeCategory(newValue) {
-    setState(() {
-      selectedCategory = newValue;
-    });
-  }
-
+class _AnswerQuestionState extends State<AnswerQuestion> {
   void alertUser() {
     Widget yesButton = TextButton(
         onPressed: () {
@@ -40,7 +25,7 @@ class _AddQuestionState extends State<AddQuestion> {
 
           var alert = AlertDialog(
             title: Text("Complete"),
-            content: Text("You have shared your question successfully."),
+            content: Text("You have shared your answer successfully."),
             actions: [okButton],
           );
 
@@ -57,7 +42,7 @@ class _AddQuestionState extends State<AddQuestion> {
 
     var alertDialog = AlertDialog(
       title: Text("Confirmation"),
-      content: Text("Share your question?"),
+      content: Text("Share your answer?"),
       actions: [noButton, yesButton],
     );
     showDialog(
@@ -67,29 +52,31 @@ class _AddQuestionState extends State<AddQuestion> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text("Answer the question"),
+      ),
       body: Center(
-        child: SingleChildScrollView (
+        child: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Container(
-                padding: EdgeInsets.fromLTRB(75, 25, 75, 25),
-                decoration: BoxDecoration(
-                  color: Colors.lightBlueAccent,
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.of(context)
+                        .push(MaterialPageRoute(builder: (context) {
+                      return FullPicture();
+                    }));
+                  },
+                  child: Center(
+                    child: Hero(
+                      tag: 'imageHero',
+                      child: Image.network(
+                        'https://picsum.photos/250?image=9',
+                      ),
+                    ),
+                  ),
                 ),
-                child: Icon(Icons.add, size: 100, color: Colors.white),
-              ),
-              SizedBox(height: 50),
-              DropdownButton(
-                hint: Text("Select a category"),
-                value: selectedCategory,
-                onChanged: changeCategory,
-                items: categories.map((valueItem) {
-                  return DropdownMenuItem(
-                    value: valueItem,
-                    child: Text(valueItem),
-                  );
-                }).toList(),
               ),
               SizedBox(height: 50),
               Container(
@@ -108,8 +95,9 @@ class _AddQuestionState extends State<AddQuestion> {
                 child: ElevatedButton(
                     onPressed: alertUser,
                     child: Text(
-                      "Add your question",
-                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                      "Add your answer",
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                     )),
               )
             ],
