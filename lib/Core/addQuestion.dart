@@ -8,7 +8,7 @@ class AddQuestion extends StatefulWidget {
 }
 
 class _AddQuestionState extends State<AddQuestion> {
-  String selectedCategory;
+   String selectedCategory;
   final categories = [
     "Math",
     "Literature",
