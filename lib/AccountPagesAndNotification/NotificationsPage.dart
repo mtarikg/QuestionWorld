@@ -20,7 +20,9 @@ class _NotificationsPageState extends State<NotificationsPage> {
       child: ListView.builder(
         itemCount: items.length,
         itemBuilder: (context, int index) {
-          return Column(
+          final notificationValue=items[index];
+          return Dismissible(key: Key(notificationValue), child:
+          Column(
             children: [
               SizedBox(
                 height: 15,
@@ -40,10 +42,22 @@ class _NotificationsPageState extends State<NotificationsPage> {
                 height: 15,
               ),
             ],
+          ),
+              onDismissed: (direction){
+            setState(() {
+              items.removeAt(index);
+            });
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('{$notificationValue} is dismissied')));
+              },
+            background:Container(color: Colors.blue,
+            child: ListTile(title: Text('$notificationValue'),),),
+
+
           );
         },
       ),
-    ));
+    )
+    );
 
   }
 }
