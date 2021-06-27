@@ -32,8 +32,8 @@ class User {
         id: doc.documentID,
         userName: doc['userName'],
         email: doc['email'],
-        photoUrl: doc['fotoUrl'],
-        school: doc['hakkinda'],
+        photoUrl: doc['photoUrl'],
+        school: doc['school'],
         instagram: doc['instagram']);
   }
 }
