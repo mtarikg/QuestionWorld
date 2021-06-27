@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "854246668471",
+    "project_id": "question-world-deb02",
+    "storage_bucket": "question-world-deb02.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:854246668471:android:6cf36dcb213e2e14c53532",
+        "android_client_info": {
+          "package_name": "com.example.question_world"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "854246668471-88v1uhbt5vmbcvoh34bs6umqbl98repo.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.question_world",
+            "certificate_hash": "954e48b6ccdedfc2af90396cad099678756fb6c7"
+          }
+        },
+        {
+          "client_id": "854246668471-da7742b6l063dd75m5psf1ccqpqmu9jn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDDgcPOcToCfIlQkMUqrcvjByMmPOqGz0g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "854246668471-da7742b6l063dd75m5psf1ccqpqmu9jn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
