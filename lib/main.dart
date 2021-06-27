@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:question_world/welcomePage.dart';
+import 'package:question_world/direct.dart';
 
 void main() {
   runApp(MyApp());
@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: WelcomePage(),
+      home: Direct(),
     );
   }
 }
