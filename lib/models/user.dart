@@ -26,14 +26,14 @@ class User {
       email: user.email,
     );
   }
-
   factory User.createFromDocument(DocumentSnapshot doc) {
     return User(
-        id: doc.documentID,
-        userName: doc['userName'],
-        email: doc['email'],
-        photoUrl: doc['photoUrl'],
-        school: doc['school'],
-        instagram: doc['instagram']);
+      id: doc.documentID,
+      userName: doc['userName'],
+      email: doc['email'],
+      photoUrl: doc['photoUrl'],
+      school: doc['school'],
+      instagram: doc['instagram'],
+    );
   }
 }
