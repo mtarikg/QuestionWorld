@@ -4,6 +4,7 @@ import 'package:question_world/models/user.dart';
 
 class AuthorizationService {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  String activeUserId;
 
   User _createUser(FirebaseUser user) {
     return user == null ? null : User.createFromFirebase(user);

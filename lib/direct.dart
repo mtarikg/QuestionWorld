@@ -21,6 +21,7 @@ class Direct extends StatelessWidget {
 
           if (snapshot.hasData) {
             User _activeUser = snapshot.data;
+            _authService.activeUserId = _activeUser.id;
             return MainPage();
           } else {
             return WelcomePage();

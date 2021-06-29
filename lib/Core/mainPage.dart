@@ -1,10 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:question_world/AccountPagesAndNotification/AccountPage.dart';
 import 'package:question_world/AccountPagesAndNotification/NotificationsPage.dart';
 import 'package:question_world/AccountPagesAndNotification/PolicyPage.dart';
 import 'package:question_world/AccountPagesAndNotification/SettingsPage.dart';
 import 'package:question_world/Core/addQuestion.dart';
+import 'package:question_world/services/authorizationService.dart';
 import 'categories.dart';
 
 class MainPage extends StatefulWidget {
@@ -17,7 +19,7 @@ class _MainPageState extends State<MainPage> {
   final _pages = <Widget>[
     Categories(),
     AddQuestion(),
-  AccountPage()
+    AccountPage()
 
     // Profile(),
   ];
@@ -34,12 +36,20 @@ class _MainPageState extends State<MainPage> {
       appBar: AppBar(
         title: Text("Question World"),
         actions: [
-          IconButton(icon: Icon(Icons.notifications), onPressed: () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context)=>NotificationsPage())
-            );
-          }),
-          IconButton(onPressed: (){Navigator.push(context,MaterialPageRoute(builder: (context)=>SettingsPage()));}, icon: Icon(Icons.more_horiz))
+          IconButton(
+              icon: Icon(Icons.notifications),
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => NotificationsPage()));
+              }),
+          IconButton(
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => SettingsPage()));
+              },
+              icon: Icon(Icons.more_horiz))
         ],
       ),
       body: Center(
