@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:question_world/Auth/loginPage.dart';
 import 'package:question_world/Core/categories.dart';
 import 'package:question_world/Core/mainPage.dart';
@@ -163,6 +164,8 @@ class _SignUpPageState extends State<SignUpPage> {
   }
 
   void _createUser() async {
+    final _authService =
+        Provider.of<AuthorizationService>(context, listen: false);
     var _formState = _formKey.currentState;
     if (_formState.validate()) {
       _formState.save();
@@ -170,7 +173,7 @@ class _SignUpPageState extends State<SignUpPage> {
         loading = true;
       });
       try {
-        await AuthorizationService().signUpWithEmail(email, password);
+        await _authService.signUpWithEmail(email, password);
         Navigator.pop(context);
       } catch (err) {
         setState(() {
