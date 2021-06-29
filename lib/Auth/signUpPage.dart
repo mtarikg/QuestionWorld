@@ -3,7 +3,9 @@ import 'package:provider/provider.dart';
 import 'package:question_world/Auth/loginPage.dart';
 import 'package:question_world/Core/categories.dart';
 import 'package:question_world/Core/mainPage.dart';
+import 'package:question_world/models/user.dart';
 import 'package:question_world/services/authorizationService.dart';
+import 'package:question_world/services/firestoreService.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({Key key}) : super(key: key);
@@ -173,7 +175,11 @@ class _SignUpPageState extends State<SignUpPage> {
         loading = true;
       });
       try {
-        await _authService.signUpWithEmail(email, password);
+        User user = await _authService.signUpWithEmail(email, password);
+        if (user != null) {
+          FirestoreService()
+              .createUser(id: user.id, email: email, userName: userName);
+        }
         Navigator.pop(context);
       } catch (err) {
         setState(() {

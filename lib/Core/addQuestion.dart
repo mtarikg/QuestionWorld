@@ -8,7 +8,7 @@ class AddQuestion extends StatefulWidget {
 }
 
 class _AddQuestionState extends State<AddQuestion> {
-   String selectedCategory;
+  String selectedCategory;
   final categories = [
     "Math",
     "Literature",
@@ -68,7 +68,7 @@ class _AddQuestionState extends State<AddQuestion> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: SingleChildScrollView (
+        child: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -80,21 +80,24 @@ class _AddQuestionState extends State<AddQuestion> {
                 child: Icon(Icons.add, size: 100, color: Colors.white),
               ),
               SizedBox(height: 50),
-              DropdownButton(
-                hint: Text("Select a category"),
-                value: selectedCategory,
-                onChanged: changeCategory,
-                items: categories.map((valueItem) {
-                  return DropdownMenuItem(
-                    value: valueItem,
-                    child: Text(valueItem),
-                  );
-                }).toList(),
+              Padding(
+                padding: const EdgeInsets.only(left: 20, right: 20),
+                child: DropdownButtonFormField(
+                  hint: Text("Select a category"),
+                  value: selectedCategory,
+                  onChanged: changeCategory,
+                  items: categories.map((valueItem) {
+                    return DropdownMenuItem(
+                      value: valueItem,
+                      child: Text(valueItem),
+                    );
+                  }).toList(),
+                ),
               ),
               SizedBox(height: 50),
               Container(
                 width: 300,
-                child: TextField(
+                child: TextFormField(
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
                     hintText: "Add more information (optional)",
@@ -109,7 +112,8 @@ class _AddQuestionState extends State<AddQuestion> {
                     onPressed: alertUser,
                     child: Text(
                       "Add your question",
-                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                     )),
               )
             ],

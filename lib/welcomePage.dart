@@ -1,9 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:question_world/Auth/loginPage.dart';
 import 'package:question_world/Auth/signUpPage.dart';
 import 'package:question_world/Core/mainPage.dart';
+import 'package:question_world/models/user.dart';
 import 'package:question_world/services/authorizationService.dart';
+import 'package:question_world/services/firestoreService.dart';
 
 class WelcomePage extends StatefulWidget {
   const WelcomePage({Key key}) : super(key: key);
@@ -190,7 +193,18 @@ class _WelcomePageState extends State<WelcomePage> {
       loading = true;
     });
     try {
-      await _authService.signInWithGoogle();
+      User user = await _authService.signInWithGoogle();
+      if (user != null) {
+        User firestoreUser = await FirestoreService().getUser(user.id);
+        if (firestoreUser == null) {
+          FirestoreService().createUser(
+            id: user.id,
+            email: user.email,
+            userName: user.userName,
+            photoUrl: user.photoUrl,
+          );
+        }
+      }
     } catch (err) {
       setState(() {
         loading = false;
