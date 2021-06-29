@@ -14,10 +14,12 @@ class SignUpPage extends StatefulWidget {
 class _SignUpPageState extends State<SignUpPage> {
   bool loading = false;
   final _formKey = GlobalKey<FormState>();
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
   String userName, email, password;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         title: Text("Sign Up"),
       ),
@@ -170,7 +172,27 @@ class _SignUpPageState extends State<SignUpPage> {
       try {
         await AuthorizationService().signUpWithEmail(email, password);
         Navigator.pop(context);
-      } catch (err) {}
+      } catch (err) {
+        setState(() {
+          loading = false;
+        });
+        showAlert(error: err.code);
+      }
     }
+  }
+
+  showAlert({error}) {
+    String errorMessage;
+
+    if (error == "ERROR_INVALID_EMAIL") {
+      errorMessage = "Email is invalid";
+    } else if (error == "ERROR_EMAIL_ALREADY_IN_USE") {
+      errorMessage = "The email address is already in use by another account.";
+    } else if (error == "ERROR_WEAK_PASSWORD") {
+      errorMessage = "Password is weak";
+    }
+
+    var snackBar = SnackBar(content: Text(errorMessage));
+    _scaffoldKey.currentState.showSnackBar(snackBar);
   }
 }
