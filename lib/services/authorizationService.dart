@@ -29,6 +29,10 @@ class AuthorizationService {
     return _firebaseAuth.signOut();
   }
 
+  Future<void> forgetPassword(String email) async {
+    await _firebaseAuth.sendPasswordResetEmail(email: email);
+  }
+
   Future<User> signInWithGoogle() async {
     GoogleSignInAccount googleAccount = await GoogleSignIn().signIn();
     GoogleSignInAuthentication googleAuth = await googleAccount.authentication;
