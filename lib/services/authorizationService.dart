@@ -19,9 +19,9 @@ class AuthorizationService {
   }
 
   Future<User> signInWithEmail(String email, String password) async {
-    var signIn = await _firebaseAuth.signInWithEmailAndPassword(
+    var signUp = await _firebaseAuth.signInWithEmailAndPassword(
         email: email, password: password);
-    return _createUser(signIn.user);
+    return _createUser(signUp.user);
   }
 
   Future<void> logOut() {

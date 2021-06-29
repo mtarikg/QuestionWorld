@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:question_world/Auth/forgetPassword.dart';
-import 'package:question_world/Core/mainPage.dart';
-import 'signUpPage.dart';
+import 'package:question_world/Auth/signUpPage.dart';
+import 'package:question_world/services/authorizationService.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key key}) : super(key: key);
@@ -12,10 +13,14 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
+
   bool loading = false;
+  String email, password;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         title: Text("Login"),
       ),
@@ -81,6 +86,9 @@ class _LoginPageState extends State<LoginPage> {
                       }
                       return null;
                     },
+                    onSaved: (value) {
+                      email = value;
+                    },
                   ),
                 ),
                 Padding(
@@ -100,6 +108,9 @@ class _LoginPageState extends State<LoginPage> {
                         return "Password can not be less then 4 chars";
                       }
                       return null;
+                    },
+                    onSaved: (value) {
+                      password = value;
                     },
                   ),
                 ),
@@ -168,15 +179,43 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  void _login() {
+  void _login() async {
+    final _authService =
+        Provider.of<AuthorizationService>(context, listen: false);
     if (_formKey.currentState.validate()) {
+      _formKey.currentState.save();
       setState(() {
         loading = true;
       });
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => MainPage()),
-      );
+
+      try {
+        await _authService.signInWithEmail(email, password);
+        Navigator.pop(context);
+      } catch (err) {
+        setState(() {
+          loading = false;
+        });
+        showAlert(error: err.code);
+      }
     }
+  }
+
+  showAlert({error}) {
+    String errorMessage;
+
+    if (error == "ERROR_INVALID_EMAIL") {
+      errorMessage = "Email is invalid";
+    } else if (error == "ERROR_USER_NOT_FOUND") {
+      errorMessage = "The user is not found.";
+    } else if (error == "ERROR_WRONG_PASSWORD") {
+      errorMessage = "The password is wrong.";
+    } else if (error == "ERROR_USER_DISABLED") {
+      errorMessage = "The user is disabled.";
+    } else {
+      errorMessage = "There is an error that we can not define.$error";
+    }
+
+    var snackBar = SnackBar(content: Text(errorMessage));
+    _scaffoldKey.currentState.showSnackBar(snackBar);
   }
 }
