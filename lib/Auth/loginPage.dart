@@ -31,7 +31,7 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget _loadingAnimation() {
     if (loading) {
-      Center(child: CircularProgressIndicator());
+      return Center(child: CircularProgressIndicator());
     } else {
       return Center();
     }

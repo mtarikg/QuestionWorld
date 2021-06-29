@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:question_world/Core/categories.dart';
+import 'package:question_world/Core/mainPage.dart';
 import 'package:question_world/models/user.dart';
 import 'package:question_world/services/authorizationService.dart';
 import 'package:question_world/welcomePage.dart';
@@ -18,7 +19,7 @@ class Direct extends StatelessWidget {
 
           if (snapshot.hasData) {
             User _activeUser = snapshot.data;
-            return Categories();
+            return MainPage();
           } else {
             return WelcomePage();
           }
