@@ -36,7 +36,9 @@ class _AccountPageState extends State<AccountPage> {
             child: CircleAvatar(
               backgroundColor: Colors.blue,
               radius: 60,
-              backgroundImage: NetworkImage(profilData.photoUrl),
+              backgroundImage: profilData.photoUrl.isNotEmpty
+                  ? NetworkImage(profilData.photoUrl)
+                  : AssetImage("assets/images/user.jpg"),
             ),
           ),
         ),
@@ -58,18 +60,20 @@ class _AccountPageState extends State<AccountPage> {
             ),
           ),
         ),
-        Center(
-          child: Container(
-            decoration: BoxDecoration(
-                border:
-                    Border(bottom: BorderSide(width: 1, color: Colors.grey))),
-            width: MediaQuery.of(context).size.width,
-            height: 50,
-            child: Center(
-                child: Text(
-              profilData.school,
-              style: TextStyle(fontSize: 20, color: Colors.black87),
-            )),
+        Expanded(
+          child: Center(
+            child: Container(
+              decoration: BoxDecoration(
+                  border:
+                      Border(bottom: BorderSide(width: 1, color: Colors.grey))),
+              width: MediaQuery.of(context).size.width,
+              height: 50,
+              child: Center(
+                  child: Text(
+                profilData.school,
+                style: TextStyle(fontSize: 20, color: Colors.black87),
+              )),
+            ),
           ),
         ),
         Center(

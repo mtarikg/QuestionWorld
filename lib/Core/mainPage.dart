@@ -39,6 +39,8 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
+    String activeUserId =
+        Provider.of<AuthorizationService>(context, listen: false).activeUserId;
     return Scaffold(
       appBar: AppBar(
         title: Text("Question World"),
@@ -70,7 +72,9 @@ class _MainPageState extends State<MainPage> {
         children: [
           Categories(),
           AddQuestion(),
-          AccountPage(),
+          AccountPage(
+            profileOwnerId: activeUserId,
+          ),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
