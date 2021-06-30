@@ -16,17 +16,24 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   int _barIndex = 0;
-  final _pages = <Widget>[
-    Categories(),
-    AddQuestion(),
-    AccountPage()
+  PageController pageController;
 
-    // Profile(),
-  ];
+  @override
+  void initState() {
+    super.initState();
+    pageController = PageController();
+  }
+
+  @override
+  void dispose() {
+    pageController.dispose();
+    super.dispose();
+  }
 
   void _onTapped(int index) {
     setState(() {
       _barIndex = index;
+      pageController.jumpToPage(_barIndex);
     });
   }
 
@@ -52,11 +59,24 @@ class _MainPageState extends State<MainPage> {
               icon: Icon(Icons.more_horiz))
         ],
       ),
-      body: Center(
-        child: _pages.elementAt(_barIndex),
+      body: PageView(
+        physics: NeverScrollableScrollPhysics(),
+        onPageChanged: (index) {
+          setState(() {
+            _barIndex = index;
+          });
+        },
+        controller: pageController,
+        children: [
+          Categories(),
+          AddQuestion(),
+          AccountPage(),
+        ],
       ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _barIndex,
+        selectedItemColor: Theme.of(context).primaryColor,
+        unselectedItemColor: Colors.grey[600],
         onTap: _onTapped,
         items: [
           BottomNavigationBarItem(
