@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:question_world/Core/mainPage.dart';
 
 class AddQuestion extends StatefulWidget {
@@ -8,6 +11,7 @@ class AddQuestion extends StatefulWidget {
 }
 
 class _AddQuestionState extends State<AddQuestion> {
+  File file;
   String selectedCategory;
   final categories = [
     "Math",
@@ -21,6 +25,60 @@ class _AddQuestionState extends State<AddQuestion> {
   void changeCategory(newValue) {
     setState(() {
       selectedCategory = newValue;
+    });
+  }
+
+  selectPhoto() {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return SimpleDialog(
+            title: Text("Create Post"),
+            children: [
+              SimpleDialogOption(
+                child: Text("Camera"),
+                onPressed: () {
+                  camera();
+                },
+              ),
+              SimpleDialogOption(
+                child: Text("Gallery"),
+                onPressed: () {
+                  gallery();
+                },
+              ),
+              SimpleDialogOption(
+                child: Text("Cancel"),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              ),
+            ],
+          );
+        });
+  }
+
+  camera() async {
+    Navigator.pop(context);
+    var image = await ImagePicker().getImage(
+        source: ImageSource.camera,
+        maxWidth: 800,
+        maxHeight: 600,
+        imageQuality: 80);
+    setState(() {
+      file = File(image.path);
+    });
+  }
+
+  gallery() async {
+    Navigator.pop(context);
+    var image = await ImagePicker().getImage(
+        source: ImageSource.gallery,
+        maxWidth: 800,
+        maxHeight: 600,
+        imageQuality: 80);
+    setState(() {
+      file = File(image.path);
     });
   }
 
@@ -66,18 +124,43 @@ class _AddQuestionState extends State<AddQuestion> {
 
   @override
   Widget build(BuildContext context) {
+    return file == null ? uploadButton() : _postForm();
+  }
+
+  Widget _postForm() {
     return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          "Create Post",
+          style: TextStyle(color: Colors.white),
+        ),
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back,
+            color: Colors.white,
+          ),
+          onPressed: () {
+            file = null;
+          },
+        ),
+      ),
       body: Center(
         child: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Container(
-                padding: EdgeInsets.fromLTRB(75, 25, 75, 25),
-                decoration: BoxDecoration(
-                  color: Colors.lightBlueAccent,
+              InkWell(
+                onTap: () {
+                  selectPhoto();
+                },
+                child: Container(
+                  padding: EdgeInsets.fromLTRB(75, 25, 75, 25),
+                  decoration: BoxDecoration(
+                    color: Colors.lightBlueAccent,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Icon(Icons.add, size: 100, color: Colors.white),
                 ),
-                child: Icon(Icons.add, size: 100, color: Colors.white),
               ),
               SizedBox(height: 50),
               Padding(
@@ -120,6 +203,19 @@ class _AddQuestionState extends State<AddQuestion> {
           ),
         ),
       ),
+    );
+  }
+
+  Widget uploadButton() {
+    return Center(
+      child: IconButton(
+          icon: Icon(
+            Icons.file_upload,
+            size: 60,
+          ),
+          onPressed: () {
+            selectPhoto();
+          }),
     );
   }
 }
