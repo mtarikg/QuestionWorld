@@ -56,7 +56,9 @@ class _MainPageState extends State<MainPage> {
           IconButton(
               onPressed: () {
                 Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => SettingsPage()));
+                    MaterialPageRoute(builder: (context) => SettingsPage(
+                      profileOwnerId: activeUserId,
+                    )));
               },
               icon: Icon(Icons.more_horiz))
         ],
