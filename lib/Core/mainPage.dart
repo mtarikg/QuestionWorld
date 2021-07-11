@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:question_world/AccountPagesAndNotification/AccountPage.dart';
 import 'package:question_world/AccountPagesAndNotification/NotificationsPage.dart';
-import 'package:question_world/AccountPagesAndNotification/PolicyPage.dart';
 import 'package:question_world/AccountPagesAndNotification/SettingsPage.dart';
 import 'package:question_world/Core/addQuestion.dart';
 import 'package:question_world/services/authorizationService.dart';
