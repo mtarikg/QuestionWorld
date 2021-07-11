@@ -1,12 +1,35 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:question_world/Core/answerQuestion.dart';
+import 'package:question_world/services/firestoreService.dart';
 
-class QuestionDetail extends StatelessWidget {
-  final answers = ["a1", "a2", "a3", "a4", "a5"];
+class QuestionDetail extends StatefulWidget {
   final question;
 
   QuestionDetail(this.question);
+
+  @override
+  _QuestionDetailState createState() => _QuestionDetailState();
+}
+
+class _QuestionDetailState extends State<QuestionDetail> {
+  var answers = [];
+
+  getAnswers() async {
+    var answersData =
+        await FirestoreService().getCurrentAnswers(widget.question);
+    setState(() {
+      answersData.forEach((element) {
+        answers.add(element);
+      });
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getAnswers();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,46 +46,45 @@ class QuestionDetail extends StatelessWidget {
               padding: const EdgeInsets.all(8.0),
               child: Container(
                 color: Colors.white,
-                child: Row(
-                  children: [
-                    Icon(
-                      Icons.person, // will be the profile pic of a user
-                      color: Colors.black,
-                    ),
-                    SizedBox(width: 15),
-                    Text(
-                      "Username ",
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 15,
-                          fontWeight: FontWeight.bold),
-                    ),
-                  ],
-                ),
+                child: FutureBuilder(
+                    future:
+                        FirestoreService().getUser(widget.question["userID"]),
+                    builder: (context, snapshot) {
+                      return Row(
+                        children: [
+                          Image.network(
+                            snapshot.data.photoUrl,
+                            scale: 2.5,
+                          ),
+                          SizedBox(width: 15),
+                          Text(
+                            snapshot.data.userName,
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      );
+                    }),
               ),
             ),
             SizedBox(height: 20),
             Container(
               padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
               child: Text(
-                "Question title",
+                widget.question["description"],
                 style: TextStyle(color: Colors.black, fontSize: 20),
               ),
             ),
             SizedBox(height: 20),
             Container(
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.of(context)
-                      .push(MaterialPageRoute(builder: (context) {
-                    return FullPicture();
-                  }));
-                },
+              child: InteractiveViewer(
                 child: Center(
                   child: Hero(
                     tag: 'imageHero',
                     child: Image.network(
-                      'https://picsum.photos/250?image=9',
+                      widget.question["imageURL"],
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -75,7 +97,9 @@ class QuestionDetail extends StatelessWidget {
               child: TextButton(
                   onPressed: () {
                     Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) => AnswerQuestion()),
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              AnswerQuestion(widget.question)),
                     );
                   },
                   child: Text(
@@ -100,43 +124,55 @@ class QuestionDetail extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       SizedBox(
-                        height: 20,
+                        height: 10,
                       ),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Container(
                           decoration: BoxDecoration(
-                            border: Border.all(color: Colors.lightBlueAccent),
-                            borderRadius: BorderRadius.circular(30),
+                            border: Border.all(width: 1, color: Colors.grey),
+                            borderRadius: BorderRadius.circular(20),
                           ),
                           child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Padding(
-                                padding: const EdgeInsets.only(left: 8.0),
-                                child: Row(
-                                  children: [
-                                    Icon(
-                                      Icons.person,
-                                      color: Colors.black87,
-                                    ),
-                                    // will be the profile pic of a user
-                                    SizedBox(width: 15),
-                                    Text(
-                                      "Username",
-                                      style: TextStyle(
-                                          color: Colors.black87,
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  ],
-                                ),
+                                padding: const EdgeInsets.only(top: 10, bottom: 10, left: 8.0),
+                                child: FutureBuilder(
+                                    future: FirestoreService()
+                                        .getUser(answers[index]["userID"]),
+                                    builder: (context, snapshot) {
+                                      return Row(
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        children: [
+                                          CircleAvatar(
+                                            child: Image(
+                                              image: NetworkImage(
+                                                  snapshot.data.photoUrl),
+                                            ),
+                                          ),
+                                          SizedBox(width: 15),
+                                          Text(
+                                            snapshot.data.userName,
+                                            style: TextStyle(
+                                                color: Colors.black87,
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                        ],
+                                      );
+                                    }),
                               ),
-                              SizedBox(height: 20),
-                              Text(
-                                "Answer here",
-                                style: TextStyle(
-                                  color: Colors.black87,
-                                  fontSize: 20,
+                              SizedBox(height: 10),
+                              Padding(
+                                padding: EdgeInsets.only(left: 10),
+                                child: Text(
+                                  answers[index]["description"],
+                                  textAlign: TextAlign.start,
+                                  style: TextStyle(
+                                    color: Colors.black87,
+                                    fontSize: 20,
+                                  ),
                                 ),
                               ),
                               Container(
@@ -144,17 +180,16 @@ class QuestionDetail extends StatelessWidget {
                                   onTap: () {
                                     Navigator.of(context).push(
                                         MaterialPageRoute(builder: (context) {
-                                      return FullPicture();
+                                      return FullPicture(
+                                          answers[index]["imageURL"]);
                                     }));
                                   },
                                   child: Center(
-                                    child: Hero(
-                                      tag: 'imageHero',
-                                      child: Image.network(
-                                        'https://picsum.photos/250?image=9',
-                                        width: 50,
-                                        height: 50,
-                                      ),
+                                    child: Image.network(
+                                      answers[index]["imageURL"],
+                                      alignment: Alignment.centerLeft,
+                                      width: 75,
+                                      height: 75,
                                     ),
                                   ),
                                 ),
@@ -163,7 +198,7 @@ class QuestionDetail extends StatelessWidget {
                           ),
                         ),
                       ),
-                      SizedBox(height: 20),
+                      SizedBox(height: 10),
                     ],
                   );
                 }),
@@ -175,22 +210,26 @@ class QuestionDetail extends StatelessWidget {
 }
 
 class FullPicture extends StatelessWidget {
+  final questionImage;
+
+  FullPicture(this.questionImage);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: GestureDetector(
+        body: InteractiveViewer(
+      child: GestureDetector(
         onTap: () {
           Navigator.pop(context);
         },
         child: Center(
           child: Hero(
             tag: 'imageHero',
-            child: Image.network(
-              'https://picsum.photos/250?image=9',
-            ),
+            child: Image.network(questionImage,
+                width: 200, height: 200, fit: BoxFit.fitHeight),
           ),
         ),
       ),
-    );
+    ));
   }
 }

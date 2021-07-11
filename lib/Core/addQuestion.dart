@@ -1,9 +1,13 @@
 import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 import 'package:question_world/Core/mainPage.dart';
+import 'package:question_world/Core/questionDetail.dart';
+import 'package:question_world/services/authorizationService.dart';
+import 'package:question_world/services/firestoreService.dart';
+import 'package:question_world/services/storageService.dart';
 
 class AddQuestion extends StatefulWidget {
   @override
@@ -11,16 +15,27 @@ class AddQuestion extends StatefulWidget {
 }
 
 class _AddQuestionState extends State<AddQuestion> {
+  bool imageLoaded = false;
   File file;
   String selectedCategory;
-  final categories = [
-    "Math",
-    "Literature",
-    "English",
-    "Geography",
-    "History",
-    "Spanish",
-  ];
+  var categories = [];
+
+  TextEditingController descriptionController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    getCategories();
+  }
+
+  Future<void> getCategories() async {
+    var categoriesInfo = await FirestoreService().getCurrentCategories();
+    setState(() {
+      categoriesInfo.forEach((element) {
+        categories.add(element["catName"]);
+      });
+    });
+  }
 
   void changeCategory(newValue) {
     setState(() {
@@ -67,6 +82,7 @@ class _AddQuestionState extends State<AddQuestion> {
         imageQuality: 80);
     setState(() {
       file = File(image.path);
+      imageLoaded = true;
     });
   }
 
@@ -79,13 +95,46 @@ class _AddQuestionState extends State<AddQuestion> {
         imageQuality: 80);
     setState(() {
       file = File(image.path);
+      imageLoaded = true;
+    });
+  }
+
+  Future<void> uploadQuestion() async {
+    var alert = AlertDialog(
+        title: Column(
+          children: [
+            CircularProgressIndicator(
+              strokeWidth: 2,
+            ),
+            SizedBox(height: 10),
+            Text("Please wait...")
+          ],
+        ),
+        content: Text("Uploading...", textAlign: TextAlign.center));
+
+    showDialog(context: context, builder: (BuildContext context) => alert);
+
+    String qImageURL = await StorageService().uploadImage(file);
+    String activeUserID =
+        Provider.of<AuthorizationService>(context, listen: false).activeUserId;
+
+    await FirestoreService().createNewQuestion(
+        imageURL: qImageURL,
+        description: descriptionController.text,
+        userID: activeUserID,
+        questionCategory: selectedCategory);
+
+    setState(() {
+      descriptionController.clear();
+      file = null;
     });
   }
 
   void alertUser() {
     Widget yesButton = TextButton(
-        onPressed: () {
+        onPressed: () async {
           Navigator.of(context).pop();
+          await uploadQuestion();
           Widget okButton = TextButton(
               onPressed: () {
                 Navigator.pushAndRemoveUntil(
@@ -118,50 +167,42 @@ class _AddQuestionState extends State<AddQuestion> {
       content: Text("Share your question?"),
       actions: [noButton, yesButton],
     );
+
     showDialog(
         context: context, builder: (BuildContext context) => alertDialog);
   }
 
   @override
   Widget build(BuildContext context) {
-    return file == null ? uploadButton() : _postForm();
+    return _postForm();
   }
 
   Widget _postForm() {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          "Create Post",
-          style: TextStyle(color: Colors.white),
-        ),
-        leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back,
-            color: Colors.white,
-          ),
-          onPressed: () {
-            file = null;
-          },
-        ),
-      ),
       body: Center(
         child: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              InkWell(
-                onTap: () {
-                  selectPhoto();
-                },
-                child: Container(
-                  padding: EdgeInsets.fromLTRB(75, 25, 75, 25),
-                  decoration: BoxDecoration(
-                    color: Colors.lightBlueAccent,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Icon(Icons.add, size: 100, color: Colors.white),
-                ),
-              ),
+              (!imageLoaded
+                  ? imagePicker()
+                  : Stack(alignment: Alignment.topRight, children: [
+                      Container(
+                          padding: EdgeInsets.fromLTRB(75, 25, 75, 25),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10)),
+                          child: file != null
+                              ? ClipRRect(
+                                child: Image.file(file),
+                              )
+                              : imagePicker()),
+                      ElevatedButton(
+                        onPressed: () => this.setState(() {
+                          file = null;
+                        }),
+                        child: Icon(Icons.clear, size: 25, color: Colors.white),
+                      ),
+                    ])),
               SizedBox(height: 50),
               Padding(
                 padding: const EdgeInsets.only(left: 20, right: 20),
@@ -181,6 +222,7 @@ class _AddQuestionState extends State<AddQuestion> {
               Container(
                 width: 300,
                 child: TextFormField(
+                  controller: descriptionController,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
                     hintText: "Add more information (optional)",
@@ -206,16 +248,19 @@ class _AddQuestionState extends State<AddQuestion> {
     );
   }
 
-  Widget uploadButton() {
-    return Center(
-      child: IconButton(
-          icon: Icon(
-            Icons.file_upload,
-            size: 60,
-          ),
-          onPressed: () {
-            selectPhoto();
-          }),
+  InkWell imagePicker() {
+    return InkWell(
+      onTap: () {
+        selectPhoto();
+      },
+      child: Container(
+        padding: EdgeInsets.fromLTRB(75, 25, 75, 25),
+        decoration: BoxDecoration(
+          color: Colors.lightBlueAccent,
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Icon(Icons.add, size: 100, color: Colors.white),
+      ),
     );
   }
 }
