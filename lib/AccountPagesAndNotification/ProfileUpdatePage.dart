@@ -49,6 +49,21 @@ class _ProfileUpdatePageState extends State<ProfileUpdatePage> {
 
              updateUserName();
               Navigator.of(context).pop(customController1.text.toString());
+              if(oldUserName!=userName) {
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Text(
+                        "Your Username has changed from \"$oldUserName\" to \"$userName\"",style: TextStyle(color: Colors.white,fontSize: 16,fontWeight: FontWeight.bold),),
+                  backgroundColor: Colors.blue,
+                ));
+              }
+              else{
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Text(
+                        "Your new UserName is the same as the old one ",style: TextStyle(
+                      color: Colors.white,fontSize: 16,fontWeight: FontWeight.bold
+                    ),),backgroundColor: Colors.blue,));
+              }
+
 
 
             },
@@ -79,6 +94,24 @@ class _ProfileUpdatePageState extends State<ProfileUpdatePage> {
               updateIUserName();
               Navigator.of(context).pop(customController2.text.toString());
 
+              if(instagramUsername!=oldInstaUserName){
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Your Instagram Username has changed from \"$oldInstaUserName\" to \"$instagramUsername\"",style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                  color: Colors.white
+                ),),
+                  backgroundColor: Colors.blue,));
+              }
+              else{
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Text(
+                        "Your new Instagram UserName is the same as the old one ",style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white
+                    ),),backgroundColor: Colors.blue,));
+              }
+
             },
           )
         ],
@@ -106,6 +139,20 @@ class _ProfileUpdatePageState extends State<ProfileUpdatePage> {
               });
               updateSchool();
               Navigator.of(context).pop(customController3.text.toString());
+              if(oldSchoolName!=schoolName) {
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Text(
+                        "Your School Name has changed from \"$oldSchoolName\" to \"$schoolName\"",style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                      color: Colors.white
+                    ),),backgroundColor: Colors.blue,));
+              }
+              else{
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Text(
+                        "Your new School Name is the same as the old one ")));
+              }
 
 
             },
@@ -115,8 +162,8 @@ class _ProfileUpdatePageState extends State<ProfileUpdatePage> {
       );
     });
   }
-  String userName,instagramUsername,email,imageUrl,schoolName;
-  uploadImage() async{
+  String userName,instagramUsername,imageUrl,schoolName,oldUserName,oldSchoolName,oldInstaUserName,oldPhotoUrl;
+  uploadImage(BuildContext context) async{
     final _picker=ImagePicker();
     final _storage=FirebaseStorage.instance;
     PickedFile image;
@@ -134,6 +181,15 @@ class _ProfileUpdatePageState extends State<ProfileUpdatePage> {
            Firestore.instance.collection('users').document(widget.profileOwnerId).updateData({
             'photoUrl':imageUrl
           });
+          if(oldPhotoUrl!=imageUrl &&imageUrl!=null) {
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text(
+                    "Your Profile Picture has been updated",style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white
+                ),),backgroundColor: Colors.blue,));
+          }
         });
 
 
@@ -166,11 +222,7 @@ class _ProfileUpdatePageState extends State<ProfileUpdatePage> {
       'school':schoolName
     });
   }
-  void updateEmail()async{
-    await Firestore.instance.collection('users').document(widget.profileOwnerId).updateData({
-      'email':email
-    });
-  }
+
 
 
   @override
@@ -191,11 +243,13 @@ class _ProfileUpdatePageState extends State<ProfileUpdatePage> {
     );
   }
   Widget _Info(User profileData,BuildContext context){
-    return Column(
+    return SingleChildScrollView(
+
+    child:  Column(
 
       children: [
        SizedBox(
-         height: 100,
+         height: 150,
 
        )
       ,Container(
@@ -224,7 +278,7 @@ class _ProfileUpdatePageState extends State<ProfileUpdatePage> {
                   ),
                 )
                 ,child: CircleAvatar(
-                  backgroundColor: Colors.blue,
+                  backgroundColor: Colors.transparent,
                   radius: 60,
                   backgroundImage: profileData.photoUrl.isNotEmpty
                       ? NetworkImage(profileData.photoUrl)
@@ -246,7 +300,13 @@ class _ProfileUpdatePageState extends State<ProfileUpdatePage> {
                 ),
                 child:IconButton(
                 icon:Icon(Icons.edit,color: Colors.blue,),
-                  onPressed: uploadImage,
+                  onPressed: (){
+                  setState(() {
+                    oldPhotoUrl=profileData.photoUrl;
+                  });
+                  uploadImage(context);
+
+                  },
     )
               ),
                 bottom: 0 ,
@@ -271,7 +331,16 @@ class _ProfileUpdatePageState extends State<ProfileUpdatePage> {
           )
           ),
           width: 360,
-          child: FlatButton(onPressed: () {createAlertDialog2(context);
+          child: FlatButton(onPressed: () {
+            if(profileData.userName!=null) {
+              setState(() {
+                oldUserName = profileData.userName;
+              });
+            }
+            else{
+              oldUserName="Nothing";
+            }
+            createAlertDialog2(context);
 
 
             },
@@ -292,7 +361,18 @@ class _ProfileUpdatePageState extends State<ProfileUpdatePage> {
           )
           ),
           width: 360,
-          child: FlatButton(onPressed: (){createAlertDialog3(context);
+          child: FlatButton(onPressed: (){
+            if(profileData.instagram!=null) {
+              setState(() {
+                oldInstaUserName = profileData.instagram;
+              });
+            }
+            else{
+              setState(() {
+                oldInstaUserName="Nothing";
+              });
+            }
+            createAlertDialog3(context);
 
             }
             ,
@@ -313,7 +393,18 @@ class _ProfileUpdatePageState extends State<ProfileUpdatePage> {
           )
           ),
           width: 360,
-          child: FlatButton(onPressed: () {createAlertDialog4(context);},
+          child: FlatButton(onPressed: () {
+            if(profileData.school!=null){
+              setState(() {
+                oldSchoolName=profileData.school;
+              });
+            }
+            else{
+              setState(() {
+                oldSchoolName="Nothing";
+              });
+            }
+            createAlertDialog4(context);},
             child:Center(child: Text("Change Your School Name",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20,color: Colors.white ),)),
           ),
         ),
@@ -327,6 +418,7 @@ class _ProfileUpdatePageState extends State<ProfileUpdatePage> {
 
 
       ],
+    )
     );
   }
 }
