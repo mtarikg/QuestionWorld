@@ -110,6 +110,27 @@ class _AnswerQuestionState extends State<AnswerQuestion> {
     });
   }
 
+  void validateAnswer() {
+    if (descriptionController.text == null ||
+        file == null) {
+      Widget warningButton = TextButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          child: Text("OK"));
+
+      var alert = AlertDialog(
+        title: Text("Insufficient information"),
+        content: Text("Provide an image or a text!"),
+        actions: [warningButton],
+      );
+
+      showDialog(context: context, builder: (BuildContext context) => alert);
+    } else {
+      alertUser();
+    }
+  }
+
   void alertUser() {
     Widget yesButton = TextButton(
         onPressed: () async {
@@ -199,7 +220,7 @@ class _AnswerQuestionState extends State<AnswerQuestion> {
                 height: 50,
                 width: 250,
                 child: ElevatedButton(
-                    onPressed: alertUser,
+                    onPressed: validateAnswer,
                     child: Text(
                       "Add your answer",
                       style:
