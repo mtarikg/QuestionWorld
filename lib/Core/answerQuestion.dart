@@ -3,7 +3,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
-import 'package:question_world/Core/questionDetail.dart';
 import 'package:question_world/services/authorizationService.dart';
 import 'package:question_world/services/firestoreService.dart';
 import 'package:question_world/services/storageService.dart';

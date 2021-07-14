@@ -7,6 +7,9 @@ class StorageService {
   String imageID;
 
   Future<String> uploadImage(File image) async {
+    if(image == null){
+      return null;
+    }
     imageID = Uuid().v4();
     StorageUploadTask uploadManager =
         _storage.child("questions/question_$imageID.jpg").putFile(image);

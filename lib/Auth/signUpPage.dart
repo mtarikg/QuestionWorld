@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:question_world/Auth/loginPage.dart';
-import 'package:question_world/Core/categories.dart';
-import 'package:question_world/Core/mainPage.dart';
 import 'package:question_world/models/user.dart';
 import 'package:question_world/services/authorizationService.dart';
 import 'package:question_world/services/firestoreService.dart';
@@ -19,6 +17,7 @@ class _SignUpPageState extends State<SignUpPage> {
   final _formKey = GlobalKey<FormState>();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   String userName, email, password;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

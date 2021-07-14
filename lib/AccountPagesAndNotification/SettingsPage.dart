@@ -1,24 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:question_world/AccountPagesAndNotification/AccountPage.dart';
 import 'package:question_world/AccountPagesAndNotification/PolicyPage.dart';
 import 'package:question_world/AccountPagesAndNotification/ProfileUpdatePage.dart';
-import 'package:question_world/Auth/loginPage.dart';
 import 'package:question_world/services/authorizationService.dart';
-
-import 'NotificationsPage.dart';
 
 class SettingsPage extends StatefulWidget {
   final String profileOwnerId;
 
-  const SettingsPage({Key key,this.profileOwnerId}): super(key:key);
-  @override
+  const SettingsPage({Key key, this.profileOwnerId}) : super(key: key);
 
+  @override
   _SettingsPageState createState() => _SettingsPageState();
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -61,8 +55,8 @@ class _SettingsPageState extends State<SettingsPage> {
                         context,
                         MaterialPageRoute(
                             builder: (context) => ProfileUpdatePage(
-                              profileOwnerId: widget.profileOwnerId,
-                            )));
+                                  profileOwnerId: widget.profileOwnerId,
+                                )));
                   },
                   child: Text("Update Profile",
                       style: TextStyle(color: Colors.white, fontSize: 20))),

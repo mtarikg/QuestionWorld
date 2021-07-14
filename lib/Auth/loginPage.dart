@@ -17,6 +17,7 @@ class _LoginPageState extends State<LoginPage> {
 
   bool loading = false;
   String email, password;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

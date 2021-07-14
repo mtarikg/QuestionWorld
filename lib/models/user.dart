@@ -26,6 +26,7 @@ class User {
       email: user.email,
     );
   }
+
   factory User.createFromDocument(DocumentSnapshot doc) {
     return User(
       id: doc.documentID,

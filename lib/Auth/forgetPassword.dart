@@ -14,6 +14,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
   final _formKey = GlobalKey<FormState>();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   String email;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

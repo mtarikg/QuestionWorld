@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:question_world/Core/mainPage.dart';
-import 'package:question_world/Core/questionDetail.dart';
 import 'package:question_world/services/authorizationService.dart';
 import 'package:question_world/services/firestoreService.dart';
 import 'package:question_world/services/storageService.dart';
@@ -130,6 +129,28 @@ class _AddQuestionState extends State<AddQuestion> {
     });
   }
 
+  void validateQuestion() {
+    if (selectedCategory == null ||
+        descriptionController.text == null ||
+        file == null) {
+      Widget warningButton = TextButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          child: Text("OK"));
+
+      var alert = AlertDialog(
+        title: Text("Insufficient information"),
+        content: Text("Provide a category along with an image or a text!"),
+        actions: [warningButton],
+      );
+
+      showDialog(context: context, builder: (BuildContext context) => alert);
+    } else {
+      alertUser();
+    }
+  }
+
   void alertUser() {
     Widget yesButton = TextButton(
         onPressed: () async {
@@ -193,8 +214,8 @@ class _AddQuestionState extends State<AddQuestion> {
                               borderRadius: BorderRadius.circular(10)),
                           child: file != null
                               ? ClipRRect(
-                                child: Image.file(file),
-                              )
+                                  child: Image.file(file),
+                                )
                               : imagePicker()),
                       ElevatedButton(
                         onPressed: () => this.setState(() {
@@ -234,7 +255,7 @@ class _AddQuestionState extends State<AddQuestion> {
                 height: 50,
                 width: 250,
                 child: ElevatedButton(
-                    onPressed: alertUser,
+                    onPressed: validateQuestion,
                     child: Text(
                       "Add your question",
                       style:

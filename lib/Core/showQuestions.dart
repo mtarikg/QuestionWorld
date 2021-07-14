@@ -53,29 +53,34 @@ class _ShowQuestionsState extends State<ShowQuestions> {
                         padding: const EdgeInsets.all(8.0),
                         child: Container(
                           width: MediaQuery.of(context).size.width - 30,
-                          height: 310,
+                          height:
+                              questions[index]["imageURL"] == null ? 50 : 310,
                           decoration: BoxDecoration(
                             border: Border.all(width: 1, color: Colors.grey),
                             borderRadius: BorderRadius.circular(20),
                           ),
                           child: Column(
                             children: [
-                              Padding(
-                                padding:
-                                    const EdgeInsets.only(top: 10, bottom: 10),
-                                child: Container(
-                                  width: MediaQuery.of(context).size.width - 60,
-                                  height: 230,
-                                  decoration: BoxDecoration(
-                                    border: Border.all(
-                                        width: 1, color: Colors.grey),
-                                  ),
-                                  child: Image.network(
-                                    questions[index]["imageURL"],
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                              ),
+                              questions[index]["imageURL"] == null
+                                  ? SizedBox()
+                                  : Padding(
+                                      padding: const EdgeInsets.only(
+                                          top: 10, bottom: 10),
+                                      child: Container(
+                                        width:
+                                            MediaQuery.of(context).size.width -
+                                                60,
+                                        height: 230,
+                                        decoration: BoxDecoration(
+                                          border: Border.all(
+                                              width: 1, color: Colors.grey),
+                                        ),
+                                        child: Image.network(
+                                          questions[index]["imageURL"],
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                    ),
                               Padding(
                                 padding: const EdgeInsets.only(left: 9.0),
                                 child: Row(
@@ -86,7 +91,7 @@ class _ShowQuestionsState extends State<ShowQuestions> {
                                       future: FirestoreService()
                                           .getUser(questions[index]["userID"]),
                                       builder: (context, snapshot) {
-                                        if(!snapshot.hasData){
+                                        if (!snapshot.hasData) {
                                           return Center(
                                             child: CircularProgressIndicator(),
                                           );
@@ -94,11 +99,10 @@ class _ShowQuestionsState extends State<ShowQuestions> {
 
                                         return Row(
                                           children: [
-                                            CircleAvatar(
-                                              child: Image(
-                                                image: NetworkImage(
-                                                    snapshot.data.photoUrl),
-                                              ),
+                                            Image.network(
+                                              snapshot.data.photoUrl,
+                                              width: 35,
+                                              height: 35,
                                             ),
                                             SizedBox(
                                               width: 10,
@@ -116,8 +120,11 @@ class _ShowQuestionsState extends State<ShowQuestions> {
                                       width: 5,
                                     ),
                                     Expanded(
-                                        child: Text(
-                                            questions[index]["description"])),
+                                        child: Container(
+                                      padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                                      child:
+                                          Text(questions[index]["description"]),
+                                    )),
                                     TextButton(
                                         onPressed: () {
                                           Navigator.of(context).push(
