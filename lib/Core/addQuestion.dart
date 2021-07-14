@@ -131,8 +131,7 @@ class _AddQuestionState extends State<AddQuestion> {
 
   void validateQuestion() {
     if (selectedCategory == null ||
-        descriptionController.text == null ||
-        file == null) {
+        (descriptionController.text == null && file == null)) {
       Widget warningButton = TextButton(
           onPressed: () {
             Navigator.of(context).pop();

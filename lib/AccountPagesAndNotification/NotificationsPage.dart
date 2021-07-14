@@ -177,10 +177,13 @@ class _NotificationsPageState extends State<NotificationsPage> {
                                                 Container(
                                                     width: 150,
                                                     height: 150,
-                                                    child: Image(
-                                                        image: NetworkImage(
-                                                            answersList[
-                                                                index]))),
+                                                    child: answersList[index] ==
+                                                            null
+                                                        ? SizedBox()
+                                                        : Image(
+                                                            image: NetworkImage(
+                                                                answersList[
+                                                                    index]))),
                                                 FutureBuilder(
                                                   future: FirestoreService()
                                                       .getUser(
@@ -222,9 +225,13 @@ class _NotificationsPageState extends State<NotificationsPage> {
                                             Container(
                                                 width: 150,
                                                 height: 150,
-                                                child: Image(
-                                                    image: NetworkImage(
-                                                        questionsList[index]))),
+                                                child:
+                                                    questionsList[index] == null
+                                                        ? SizedBox()
+                                                        : Image(
+                                                            image: NetworkImage(
+                                                                questionsList[
+                                                                    index]))),
                                           ],
                                         ),
                                       )
