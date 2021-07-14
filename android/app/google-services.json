@@ -22,6 +22,14 @@
           }
         },
         {
+          "client_id": "854246668471-e5ehiqrtv2cmunnl6drng5ik25gj715o.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.question_world",
+            "certificate_hash": "67fd8b3705b133390d13f2ca0dccab0c0773176b"
+          }
+        },
+        {
           "client_id": "854246668471-t910r2qlc9j212jkluf8ac429fkoshc7.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

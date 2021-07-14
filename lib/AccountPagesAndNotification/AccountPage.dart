@@ -2,6 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:question_world/Core/questionDetail.dart';
 import 'package:question_world/models/user.dart';
 import 'package:question_world/services/firestoreService.dart';
+import 'dart:io';
+
+import 'package:file_picker/file_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/material.dart';
+import 'package:question_world/Core/questionDetail.dart';
+import 'package:question_world/models/user.dart';
+import 'package:question_world/services/firestoreService.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:path/path.dart';
+import 'package:indexed_list_view/indexed_list_view.dart';
+
 
 class AccountPage extends StatefulWidget {
   final String profileOwnerId;
@@ -12,6 +27,43 @@ class AccountPage extends StatefulWidget {
 }
 
 class _AccountPageState extends State<AccountPage> {
+ var question;
+ var questionsList=new List();
+ var description;
+ var questionObj;
+ var questionObjList=new List();
+  void getQuestions()async{
+    var Records = Firestore.instance.collection('categories');
+    await Records.snapshots().listen((categories) {
+      for (int i = 0; i < categories.documents.length; i++) {
+        var questionCollection =
+        categories.documents[i].reference.collection('questions');
+        var questionsRecords =
+        questionCollection.snapshots().forEach((questions) {
+          for (int i = 0; i < questions.documents.length; i++) {
+            if (widget.profileOwnerId ==
+                questions.documents[i].data['userID']) {
+              setState(() {
+                question = questions.documents[i].data['imageURL'];
+                description=questions.documents[i].data['description'];
+                questionObj=questions.documents[i];
+              });
+              setState(() {
+                questionsList.add(question);
+                questionObjList.add(questionObj);
+              });
+            }
+          }
+        });
+      }
+      });
+        }
+        @override
+  void initState() {
+    getQuestions();
+    // TODO: implement initState
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,12 +74,12 @@ class _AccountPageState extends State<AccountPage> {
               return Center(child: CircularProgressIndicator());
             }
 
-            return _pageWidgets(snapshot.data);
+            return _pageWidgets(snapshot.data,context);
           }),
     );
   }
 
-  Widget _pageWidgets(User profilData) {
+  Widget _pageWidgets(User profilData,BuildContext context) {
     return ListView(
       children: [
         Center(
@@ -110,52 +162,76 @@ class _AccountPageState extends State<AccountPage> {
               border: Border.all(width: 1, color: Colors.grey),
               borderRadius: BorderRadius.circular(20),
             ),
-            child: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(top: 10, bottom: 10),
-                  child: Container(
-                    width: MediaQuery.of(context).size.width - 60,
-                    height: 230,
-                    decoration: BoxDecoration(
-                      border: Border.all(width: 1, color: Colors.grey),
-                    ),
-                    child: Image.network(
-                      "https://picsum.photos/250?image=9",
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 9.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                        child: Row(
-                          children: [
-                            Icon(Icons.person),
-                            Text(
-                              "Username",
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                          ],
+            child:ListView.builder(
+              itemCount: questionsList.length,
+              itemBuilder: (BuildContext context, int index) {
+                return Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(top: 10, bottom: 10),
+                      child: Container(
+                        width: MediaQuery
+                            .of(context)
+                            .size
+                            .width - 60,
+                        height: 230,
+                        decoration: BoxDecoration(
+                          border: Border.all(width: 1, color: Colors.grey),
+                        ),
+                        child: Image.network(
+                          questionsList[index],
+                          fit: BoxFit.cover,
                         ),
                       ),
-                      SizedBox(
-                        width: 5,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 9.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            child: Row(
+                              children: [
+                                CircleAvatar(
+                                  child: Image(
+                                    image: NetworkImage(profilData.photoUrl),
+                                  ),
+                                ),
+                                Text(
+                                  profilData.userName,
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(
+                            width: 5,
+                          ),
+                          Expanded(
+                            child: Text(description),
+                          ),
+                          TextButton(onPressed: () {
+                Navigator.of(context).push(
+                MaterialPageRoute(
+                builder: (context) {
+                return QuestionDetail(
+                questionObjList[index]);
+                }));
+                }, child: Text(
+                            "See answers!",
+                            style: TextStyle(color: Colors.blue),
+                          ))
+                        ],
                       ),
-                      Expanded(
-                        child: Text("Please help this question."),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
+                    ),
+                  ],
+                );
+              }
           ),
         ),
-      ],
+        )],
+
     );
+
   }
 }

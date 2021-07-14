@@ -7,7 +7,18 @@ import 'package:question_world/services/authorizationService.dart';
 
 import 'NotificationsPage.dart';
 
-class SettingsPage extends StatelessWidget {
+class SettingsPage extends StatefulWidget {
+  final String profileOwnerId;
+
+  const SettingsPage({Key key,this.profileOwnerId}): super(key:key);
+  @override
+
+  _SettingsPageState createState() => _SettingsPageState();
+}
+
+class _SettingsPageState extends State<SettingsPage> {
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,7 +60,9 @@ class SettingsPage extends StatelessWidget {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => ProfileUpdatePage()));
+                            builder: (context) => ProfileUpdatePage(
+                              profileOwnerId: widget.profileOwnerId,
+                            )));
                   },
                   child: Text("Update Profile",
                       style: TextStyle(color: Colors.white, fontSize: 20))),

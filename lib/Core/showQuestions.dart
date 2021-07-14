@@ -86,6 +86,12 @@ class _ShowQuestionsState extends State<ShowQuestions> {
                                       future: FirestoreService()
                                           .getUser(questions[index]["userID"]),
                                       builder: (context, snapshot) {
+                                        if(!snapshot.hasData){
+                                          return Center(
+                                            child: CircularProgressIndicator(),
+                                          );
+                                        }
+
                                         return Row(
                                           children: [
                                             CircleAvatar(

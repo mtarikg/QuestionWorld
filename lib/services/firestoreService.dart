@@ -19,7 +19,7 @@ class FirestoreService {
 
   Future<User> getUser(id) async {
     DocumentSnapshot doc =
-        await _firestore.collection("users").document(id).get();
+    await _firestore.collection("users").document(id).get();
     if (doc.exists) {
       User user = User.createFromDocument(doc);
       return user;
@@ -29,7 +29,7 @@ class FirestoreService {
 
   Future<List<DocumentSnapshot>> getCurrentCategories() async {
     final QuerySnapshot qs =
-        await _firestore.collection("categories").getDocuments();
+    await _firestore.collection("categories").getDocuments();
     final List<DocumentSnapshot> docSnap = qs.documents;
     return docSnap;
   }
@@ -91,4 +91,12 @@ class FirestoreService {
       "userID": userID,
     });
   }
+
+Future<void> createNotification({userID}) async{
+    var notificationID=Uuid().v4();
+    await _firestore.collection('notifications').document(notificationID).setData({
+      "index":0,
+      "userID":userID
+    });
+}
 }
